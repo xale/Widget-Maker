@@ -1,0 +1,47 @@
+<head>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module">
+    import interact from 
+    'https://cdn.interactjs.io/v1.10.1/interactjs/index.js'
+
+    const dragMoveElement = (event) => {
+      const target = event.target;
+      const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+      const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+      target.setAttribute('data-x', x);
+      target.setAttribute('data-y', y);
+    };
+    
+    interact('.respositionable').draggable(true)
+        .on('dragmove', dragMoveElement);
+    
+    interact('#inventory .item').draggable(true)
+        .on('dragstart', (event) => event.target.style.zIndex = '10')
+        .on('dragmove', dragMoveElement)
+        .on('dragend', (event) => {
+          const target = event.target;
+          target.style.transform = 'none';
+          target.style.zIndex = '0'
+          target.setAttribute('data-x', 0);
+          target.setAttribute('data-y', 0);
+        });
+    
+    interact('#workspace').dropzone({
+      accept: '#inventory .item',
+      ondrop: (event) => {
+        const newItem = event.relatedTarget.cloneNode(/* deep= */ true);
+        interact(newItem).draggable(true)
+          .on('dragmove', dragMoveElement);
+        event.target.appendChild(newItem);
+      },
+    });
+  </script>
+</head>
+<body>
+  <div id="workspace">
+    <div id="inventory" class="respositionable">
+      <div class="item"></div>
+    </div>
+  </div>
+</body>

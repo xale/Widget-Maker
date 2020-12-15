@@ -1,0 +1,25 @@
+html, body {
+  height: 100%;
+}
+
+#workspace {
+  overflow: scroll;
+  height: 100%;
+}
+
+#inventory {
+  height: 100px;
+  border: 3px solid orange;
+  overflow: show;
+}
+
+.respositionable {
+  touch-action: none;
+}
+
+.item {
+  width: 20px;
+  height: 20px;
+  background: red;
+  touch-action: none;
+}
